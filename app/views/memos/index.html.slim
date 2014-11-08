@@ -1,0 +1,23 @@
+h1 Listing memos
+
+table
+  thead
+    tr
+      th Content
+      th Archived
+      th
+      th
+      th
+
+  tbody
+    - @memos.each do |memo|
+      tr
+        td = memo.content
+        td = memo.archived
+        td = link_to 'Show', memo
+        td = link_to 'Edit', edit_memo_path(memo)
+        td = link_to 'Destroy', memo, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Memo', new_memo_path

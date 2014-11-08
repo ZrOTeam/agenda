@@ -1,0 +1,1 @@
+json.extract! @memo, :id, :content, :archived, :created_at, :updated_at

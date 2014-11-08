@@ -1,0 +1,32 @@
+doctype html
+html lang="es"
+  head
+    meta charset="utf-8"
+    title = "Agenda"
+
+    = stylesheet_link_tag 'agenda', media: 'all', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+    = yield(:head)
+    
+  body class= "agenda"
+    #body_page.container
+      .row
+        .col-md-12
+          - if content_for?(:title)
+            .page-header
+              h1
+                = content_for(:title).html_safe
+              
+          .page_content
+            == yield
+      hr
+        p.text-center style="color:#ccc"
+          |Desarrollado por Carlos Montalvo
+          
+    script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"
+    javascript:
+      window.jQuery || document.write('#{ escape_javascript(javascript_include_tag "jquery") }')
+
+    = javascript_include_tag "agenda"
+
+    = yield(:footer)

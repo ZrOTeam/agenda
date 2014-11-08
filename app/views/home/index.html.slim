@@ -1,0 +1,95 @@
+- content_for :footer do
+  javascript:
+    $('#clients').on('change', function() {
+      var url = "/c/";
+      redirect_to(url + this.value + "#contacts" );
+    });
+
+
+    $("#search").on("keyup", function() {
+      
+      var text_search = $(this).val();
+
+      if (text_search.length > 3) {
+        $.getJSON( '/contacts.json', {
+          text: $(this).val(),
+          ajax: "true"
+        }, function(j) {
+          var i, options;
+          options = "";
+          i = 0;
+          while (i < j.length) {
+            options += "<option value=\"" + j[i].id + "\">" + j[i].fullname + "</option>";
+            i++;
+          }
+          $("select#clients").html(options);
+        });
+      }
+    });
+
+- title "Bienvenidos"
+
+/! Nav tabs
+ul.nav.nav-tabs role="tablist" 
+  li role="presentation" 
+    a data-toggle="tab" href="#events" role="tab"  Eventos
+
+  li role="presentation" 
+    a data-toggle="tab" href="#group" role="tab"  Grupos
+  li.active role="presentation" 
+    a data-toggle="tab" href="#contacts" role="tab"  Contactos
+  li role="presentation" 
+    a data-toggle="tab" href="#memos" role="tab"  Memos
+ 
+/! Tab panes
+.tab-content
+  #events.tab-pane.fade role="tabpanel"  ...
+  #contacts.tab-pane.fade.in.active role="tabpanel"
+    .row
+      .col-md-6
+        .form-group
+
+          input name="search" id="search" type="text" value="" class="form-control input-sm" placeholder="Busqueda de contacto"
+          br
+          = select_tag :clients, options_for_select(@contacts.map{|c| [c.fullname, c.o_id]}),  multiple: true, class: "form-control input-sm select-list"
+
+          
+          br
+          = link_to "Nuevo", "#{root_path}#contacts", class: "btn btn-primary btn-block"
+      .col-md-6
+        = form_for @contact do |f|
+          - if @contact.errors.any?
+            #error_explanation
+              h2 = "#{pluralize(@contact.errors.count, "error")} prohibited this contact from being saved:"
+              ul
+                - @contact.errors.full_messages.each do |message|
+                  li = message
+
+
+          .form-group
+            = f.text_field :first_name,  placeholder:"Nombre", class: "form-control input-sm"
+          .form-group
+            = f.text_field :last_name,  placeholder:"Apellidos",class: "form-control input-sm"
+
+          .form-group
+            = f.text_field :email,  placeholder:"Email",class: "form-control input-sm"
+          .form-group
+            = f.text_field :celphone,  placeholder:"Celular",class: "form-control input-sm"
+          .form-group
+            = f.text_field :phone,  placeholder:"Telefono",class: "form-control input-sm"
+          .form-group
+            = f.text_area :address,  placeholder:"Direccion",class: "form-control input-sm"
+          .form-group
+            = f.text_area :comments,  placeholder:"Comentario",class: "form-control input-sm"
+
+          .form-group
+            - unless @contact.id
+              .actions = f.submit 'Agregar Contacto', class: "btn btn-info btn-block"
+            - else
+              .col-md-6
+                .actions = f.submit 'Actualizar', class: "btn btn-info btn-block"
+              .col-md-6
+                .actions 
+                  = link_to 'Borrar', @contact, data: {:confirm => "Esta seguro de eliminar #{@contact.fullname}"}, :method => :delete , class: "btn btn-warning btn-block"
+
+  #memos.tab-pane.fade role="tabpanel"

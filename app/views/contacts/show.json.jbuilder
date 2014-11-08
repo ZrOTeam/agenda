@@ -1,0 +1,1 @@
+json.extract! @contact, :id, :group_id, :first_name, :last_name, :birthday, :email, :celphone, :phone, :address, :comments, :created_at, :updated_at

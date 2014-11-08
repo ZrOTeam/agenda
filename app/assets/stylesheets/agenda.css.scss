@@ -1,0 +1,22 @@
+@import "bootstrap_theme";
+
+.container {
+width: 750px;
+}
+
+.tab-pane {
+  padding: 10px 0px;
+}
+
+
+select.select-list {
+  height:300px !important;
+}
+
+.page-header 
+{
+  margin:10px 0px;
+  h1 {
+    margin:0px;
+  }
+}
